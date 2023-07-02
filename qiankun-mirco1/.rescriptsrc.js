@@ -1,11 +1,28 @@
 const { name } = require('./package');
+const { ModuleFederationPlugin } = require('webpack').container;
 
 module.exports = {
   webpack: config => {
     config.output.library = `${name}=[name]`;
     config.output.libraryTarget = 'umd';
-    // config.output.jsonpFunction = `webpackJsonp_${name}`;
+    //静态资源的公共路径
+    config.output.publicPath = 'http://localhost:4000/';
+    config.output.chunkLoadingGlobal = `webpackJsonp_${name}`;
     config.output.globalObject = 'window';
+
+    config.plugins.push(
+      new ModuleFederationPlugin({
+        name: 'mirco1',
+        filename: 'remoteEntry.js',
+        exposes: {
+          './button': './src/components/Button',
+        },
+        shared: {
+          react: { singleton: true },
+          'react-dom': { singleton: true },
+        },
+      })
+    );
 
     return config;
   },
