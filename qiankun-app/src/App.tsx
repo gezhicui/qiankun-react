@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import { DesktopOutlined, PieChartOutlined } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Breadcrumb, Layout, Menu } from "antd";
-import { BrowserRouter, Link } from "react-router-dom";
+import { Routes, Link, Route } from "react-router-dom";
+import Home from "./Home/index";
 
 const { Content, Footer, Sider } = Layout;
 
@@ -23,8 +24,9 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  getItem(<Link to="/react1">react-app1</Link>, "1", <PieChartOutlined />),
-  getItem(<Link to="/react2">react-app2</Link>, "2", <DesktopOutlined />),
+  getItem(<Link to="/home">app-home</Link>, "1", <PieChartOutlined />),
+  getItem(<Link to="/react1">react-app1</Link>, "2", <PieChartOutlined />),
+  getItem(<Link to="/react2">react-app2</Link>, "3", <DesktopOutlined />),
 ];
 
 const App: React.FC = () => {
@@ -50,12 +52,15 @@ const App: React.FC = () => {
             <Breadcrumb.Item>User</Breadcrumb.Item>
             <Breadcrumb.Item>Bill</Breadcrumb.Item>
           </Breadcrumb>
+
+          <Routes>
+            <Route path="/home" element={<Home />} />
+            {/* 将匹配的请求转发给子应用 主应用不渲染 */}
+            <Route path="/react1" element={null} />
+            <Route path="/react2" element={null} />
+          </Routes>
           {/* 子应用容器 */}
-          <div
-            id="container"
-            className="site-layout-background"
-            style={{ minHeight: 360 }}
-          ></div>
+          <div id="container" />
         </Content>
         <Footer style={{ textAlign: "center" }}>
           Ant Design ©2023 Created by Ant UED
